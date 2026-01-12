@@ -30,10 +30,9 @@
       padding:18px;
     }
 
-    /* carré */
+    /* Visuel + vertical */
     .frame{
-      width:min(980px, 96vw);
-      aspect-ratio: 1 / 1;
+      width:min(880px, 96vw);
       background:linear-gradient(180deg,#ffffff 0%, #f7fbff 100%);
       border:1px solid var(--border);
       border-radius: 26px;
@@ -41,8 +40,7 @@
       overflow:hidden;
     }
     .pad{
-      padding:22px;
-      height:100%;
+      padding:20px;
       display:flex;
       flex-direction:column;
       gap:14px;
@@ -52,78 +50,52 @@
     .header{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:16px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
+      gap:12px;
+      flex-wrap:wrap;
     }
     .logo{
-      width:170px;
-      max-width:32vw;
+      width:160px;
+      max-width:40vw;
       height:auto;
       display:block;
     }
     .title{
       margin:0;
-      font-size: clamp(16px, 1.7vw, 26px);
+      font-size: clamp(16px, 1.8vw, 24px);
       line-height:1.15;
       letter-spacing:-0.01em;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    @media (max-width: 560px){
-      .title{ white-space: normal; }
+      font-weight:900;
+      color:var(--text);
+      flex:1 1 320px;
     }
 
-    /* Layout */
-    .grid{
-      flex:1;
-      display:grid;
-      grid-template-columns: 1.05fr 1.35fr;
-      gap:16px;
-      min-height:0;
-    }
+    /* Blocks */
     .card{
       background:var(--card);
       border:1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: 0 6px 16px rgba(2,6,23,.05);
       overflow:hidden;
-      min-height:0;
     }
-    .card-inner{ padding:16px; height:100%; }
-
-    /* Left content */
-    .left-stack{
-      height:100%;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
+    .card-inner{ padding:14px; }
 
     .pave{
       padding:14px;
       border-radius:14px;
       border:1px solid var(--border);
-      background:#ffffff;
+      background:#fff;
     }
     .pave .p-title{
       margin:0 0 8px;
       font-weight:900;
       color:var(--gan-blue);
       font-size:14px;
-      letter-spacing:.01em;
     }
     .pave ul{
       margin:0;
       padding-left:18px;
       color:var(--text);
-      line-height:1.35;
+      line-height:1.4;
       font-size:13px;
     }
     .pave li{ margin:6px 0; }
@@ -140,25 +112,17 @@
       white-space:nowrap;
     }
 
-    /* Right: wheel + result */
-    .wheel-wrap{
-      height:100%;
-      display:grid;
-      grid-template-rows: auto 1fr auto;
-      gap:12px;
-      min-height:0;
-    }
+    /* Wheel */
     .wheel-title{
       font-weight:900;
       font-size:15px;
-      padding:16px 16px 0 16px;
+      padding:14px 14px 0 14px;
     }
     .wheel-area{
       position:relative;
       display:grid;
       place-items:center;
-      padding:10px;
-      min-height:0;
+      padding:10px 10px 18px 10px; /* espace sous la roue */
       user-select:none;
     }
     canvas{
@@ -180,12 +144,16 @@
       pointer-events:none;
     }
 
-    /* Bouton central */
+    /* ✅ Bouton parfaitement centré (et légèrement descendu) */
     .center-btn{
       position:absolute;
+      left:50%;
+      top:50%;
+      transform: translate(-50%, -50%) translateY(20px);
       z-index:4;
-      width:96px;
-      height:96px;
+
+      width:92px;
+      height:92px;
       border-radius:999px;
       border:2px solid #e2e8f0;
       background: var(--gan-green);
@@ -198,24 +166,25 @@
       display:grid;
       place-items:center;
       text-transform:uppercase;
-      transform: translateY(22px);
     }
-    .center-btn:active{ transform: translateY(22px) scale(.98); }
+    .center-btn:active{
+      transform: translate(-50%, -50%) translateY(20px) scale(.98);
+    }
     .center-btn[disabled]{ opacity:.55; cursor:not-allowed; }
 
-    /* Result */
+    /* ✅ Résultat toujours visible, jamais recouvert */
     .result{
       border-top:1px solid var(--border);
       background:#fff;
       padding:14px;
       display:grid;
-      grid-template-columns: 96px 1fr;
+      grid-template-columns: 110px 1fr;
       gap:12px;
       align-items:start;
     }
     .thumb{
-      width:96px;
-      height:72px;
+      width:110px;
+      height:82px;
       border-radius:12px;
       border:1px solid var(--border);
       background:#f1f5f9;
@@ -239,7 +208,7 @@
     .res-meta .text{
       margin:0 0 10px;
       color:var(--text);
-      line-height:1.35;
+      line-height:1.4;
       font-size:13px;
     }
     .actions{
@@ -270,11 +239,11 @@
       box-shadow: 0 10px 18px rgba(242,201,76,.25);
     }
 
-    /* Bottom section (like previous) */
+    /* Bottom */
     .bottom{
       display:grid;
       grid-template-columns: 1.35fr 1fr;
-      gap:16px;
+      gap:14px;
     }
     .photo{
       width:100%;
@@ -284,13 +253,12 @@
       border:1px solid var(--border);
       background:#e2e8f0;
       display:block;
-      min-height:120px;
+      min-height:140px;
     }
     .wishes{
       display:flex;
       flex-direction:column;
       gap:10px;
-      height:100%;
       justify-content:space-between;
     }
     .wishes .copy{
@@ -299,17 +267,8 @@
       border:1px solid var(--border);
       background:#fff;
     }
-    .wishes .copy .big{
-      font-weight:900;
-      font-size:16px;
-      margin:0 0 6px;
-    }
-    .wishes .copy .small{
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.35;
-    }
+    .wishes .copy .big{ font-weight:900; font-size:16px; margin:0 0 6px; }
+    .wishes .copy .small{ margin:0; color:var(--muted); font-size:13px; line-height:1.35; }
     .btn-rdv{
       appearance:none;
       border:0;
@@ -325,7 +284,7 @@
       text-align:center;
     }
 
-    /* Modal (C) full-screen */
+    /* Modal plein écran */
     .modal{
       position:fixed;
       inset:0;
@@ -374,24 +333,17 @@
       font-weight:900;
       cursor:pointer;
     }
-    .modal-body{
-      background:#f8fafc;
-      display:grid;
-      place-items:center;
-    }
     .modal-frame{
       width:100%;
       height:100%;
       border:0;
+      background:#f8fafc;
     }
 
     @media (max-width: 860px){
-      .frame{ aspect-ratio:auto; }
-      .grid{ grid-template-columns: 1fr; }
       .bottom{ grid-template-columns: 1fr; }
-      .pad{ padding:16px; }
       .result{ grid-template-columns: 1fr; }
-      .thumb{ width:100%; height:160px; }
+      .thumb{ width:100%; height:180px; }
     }
   </style>
 </head>
@@ -402,76 +354,54 @@
 
       <!-- HEADER -->
       <div class="header">
-        <div class="brand">
-          <img class="logo" src="logo-gan-patrimoine.png" alt="Logo Gan Patrimoine" />
-          <h1 class="title">Gan Patrimoine 17 vous présente ses vœux 2026&nbsp;!</h1>
-        </div>
+        <img class="logo" src="logo-gan-patrimoine.png" alt="Logo Gan Patrimoine" />
+        <h1 class="title">Gan Patrimoine 17 vous présente ses vœux 2026&nbsp;!</h1>
       </div>
 
-      <div class="grid">
-        <!-- LEFT -->
-        <div class="card">
-          <div class="card-inner left-stack">
+      <!-- ✅ Vertical blocks -->
+      <div class="pave">
+        <p class="p-title">Les nouveautés chez Gan Patrimoine</p>
+        <ul>
+          <li><strong>Essentiels</strong> <span class="pill">encours &lt; 60&nbsp;000€</span></li>
+          <li><strong>Le Club</strong> <span class="pill">60&nbsp;000€ &lt; encours &lt; 250&nbsp;000€</span></li>
+          <li><strong>Gestion Privée</strong> <span class="pill">&gt; 250&nbsp;000€</span></li>
+        </ul>
+      </div>
 
-            <div class="pave">
-              <p class="p-title">Les nouveautés chez Gan Patrimoine</p>
-              <ul>
-                <li><strong>Essentiels</strong> <span class="pill">encours &lt; 60&nbsp;000€</span></li>
-                <li><strong>Le Club</strong> <span class="pill">60&nbsp;000€ &lt; encours &lt; 250&nbsp;000€</span></li>
-                <li><strong>Gestion Privée</strong> <span class="pill">&gt; 250&nbsp;000€</span></li>
-              </ul>
-            </div>
+      <div class="pave">
+        <p class="p-title">Jouez à la roue sur vos versements</p>
+        <ul>
+          <li>Découvrez un gain ou une offre produit à chaque lancer.</li>
+          <li>Les conditions s’affichent automatiquement.</li>
+        </ul>
+      </div>
 
-            <div class="pave">
-              <p class="p-title">Jouez à la roue sur vos versements</p>
-              <ul>
-                <li>Découvrez un gain ou une offre produit à chaque lancer.</li>
-                <li>Les conditions s’affichent automatiquement.</li>
-              </ul>
-            </div>
+      <!-- WHEEL CARD -->
+      <div class="card">
+        <div class="wheel-title">La roue des offres 2026</div>
 
-            <div class="pave" style="margin-top:auto;">
-              <p class="p-title">Astuce</p>
-              <ul>
-                <li>Vous pouvez cliquer sur la roue <strong>ou</strong> sur le bouton <strong>GAGNEZ</strong>.</li>
-                <li>Les fiches mémo s’ouvrent en plein écran.</li>
-              </ul>
-            </div>
-
-          </div>
+        <div class="wheel-area">
+          <div class="pointer" aria-hidden="true"></div>
+          <canvas id="wheel" width="520" height="520" aria-label="Roue"></canvas>
+          <button id="startBtn" class="center-btn">GAGNEZ</button>
         </div>
 
-        <!-- RIGHT -->
-        <div class="card">
-          <div class="wheel-wrap">
-            <div class="wheel-title">La roue des offres 2026</div>
-
-            <div class="wheel-area">
-              <div class="pointer" aria-hidden="true"></div>
-              <canvas id="wheel" width="520" height="520" aria-label="Roue"></canvas>
-              <button id="startBtn" class="center-btn">GAGNEZ</button>
+        <div class="result" aria-live="polite">
+          <img id="thumb" class="thumb" src="" alt="Visuel du résultat" style="display:none;" />
+          <div class="res-meta">
+            <div class="label">Résultat</div>
+            <div id="resTitle" class="title2">Cliquez sur GAGNEZ</div>
+            <p id="resText" class="text">La roue s’arrêtera sur un segment aléatoire, avec un texte et un visuel.</p>
+            <div class="actions">
+              <button id="openMemoBtn" class="btn" style="display:none;">Voir la fiche</button>
+              <a id="openMemoLink" class="btn" href="#" target="_blank" rel="noopener" style="display:none;">Ouvrir dans un onglet</a>
+              <a class="btn btn-primary" href="https://forms.gle/MgPuFXV8FjXicg8UA" target="_blank" rel="noopener">Rencontrons-nous !</a>
             </div>
-
-            <!-- Result (texte + visuel + actions) -->
-            <div class="result" aria-live="polite">
-              <img id="thumb" class="thumb" src="" alt="Visuel du résultat" style="display:none;" />
-              <div class="res-meta">
-                <div class="label">Résultat</div>
-                <div id="resTitle" class="title2">Cliquez sur GAGNEZ</div>
-                <p id="resText" class="text">La roue s’arrêtera sur un segment aléatoire, avec un texte et un visuel.</p>
-                <div class="actions">
-                  <button id="openMemoBtn" class="btn" style="display:none;">Voir la fiche</button>
-                  <a id="openMemoLink" class="btn" href="#" target="_blank" rel="noopener" style="display:none;">Ouvrir dans un onglet</a>
-                  <a class="btn btn-primary" href="https://forms.gle/MgPuFXV8FjXicg8UA" target="_blank" rel="noopener">Rencontrons-nous !</a>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
 
-      <!-- BOTTOM (comme la précédente) -->
+      <!-- BOTTOM -->
       <div class="bottom">
         <div>
           <img class="photo" src="photo-groupe.jpg" alt="Photo des conseillers Gan Pat 17" />
@@ -492,31 +422,21 @@
     </div>
   </div>
 
-  <!-- MODAL plein écran -->
+  <!-- MODAL -->
   <div id="modal" class="modal" role="dialog" aria-modal="true" aria-label="Fiche mémo">
     <div class="modal-card">
       <div class="modal-bar">
         <p id="modalTitle" class="modal-title">Fiche mémo</p>
         <button id="modalClose" class="modal-close">Fermer</button>
       </div>
-      <div class="modal-body">
-        <iframe id="modalFrame" class="modal-frame" src="" title="Document"></iframe>
-      </div>
+      <iframe id="modalFrame" class="modal-frame" src="" title="Document"></iframe>
     </div>
   </div>
 
 <script>
-  /**
-   * FICHIERS À METTRE DANS LE REPO (même dossier que index.html)
-   * - heliante-flash-memo.png / heliante-flash-memo.pdf
-   * - telluma-boost.png / telluma-boost.pdf
-   * - heliante-innov-memo.png / heliante-innov-memo.pdf
-   * - logo-gan-patrimoine.png, photo-groupe.jpg
-   */
-
   const segments = [
     {
-      label: "Heliante Flash Mai 2026 • 8%",
+      label: "Heliante Flash • 8%",
       color: "#E8F0FB",
       title: "Heliante Flash Mai 2026 — 8%",
       text: "Fiche mémo : Heliante Flash Mai 2026 (8%).",
@@ -525,7 +445,7 @@
       memoTitle: "Heliante Flash Mai 2026 — Fiche mémo"
     },
     {
-      label: "3 000 €",
+      label: "3 000€",
       color: "#FFF7E6",
       title: "Abondement jusqu’à 3 000 €",
       text: "Abondement de 1% du versement plafonné à 3 000€ pour tout client Gestion Privée ou versement de plus de 250 000€.",
@@ -541,14 +461,14 @@
       memoTitle: "Telluma Boost Mai 2026 — Document"
     },
     {
-      label: "750 €",
+      label: "750€",
       color: "#F1F5F9",
       title: "Abondement jusqu’à 750 €",
       text: "Abondement de 1% du versement plafonné à 750€ pour tout versement d’un montant minimum de 30 000€.",
       thumb: "", memo: "", memoTitle: ""
     },
     {
-      label: "Heliante Innov & Transfo • 10%",
+      label: "Heliante Innov • 10%",
       color: "#F7F2FF",
       title: "Heliante Innov & Transfo Mai 2026 — 10%",
       text: "Fiche mémo : Heliante Innov & Transfo Mai 2026 (10%).",
@@ -557,7 +477,7 @@
       memoTitle: "Heliante Innov & Transfo Mai 2026 — Fiche mémo"
     },
     {
-      label: "1 500 €",
+      label: "1 500€",
       color: "#EAF2FF",
       title: "Abondement jusqu’à 1 500 €",
       text: "Abondement de 1% du versement plafonné à 1 500€ pour tout versement d’un montant minimum de 20 000€ pour tout client Le Club.",
@@ -565,19 +485,16 @@
     }
   ];
 
-  // Wheel canvas
   const canvas = document.getElementById("wheel");
   const ctx = canvas.getContext("2d");
   const startBtn = document.getElementById("startBtn");
 
-  // Result UI
   const thumbEl = document.getElementById("thumb");
   const resTitle = document.getElementById("resTitle");
   const resText  = document.getElementById("resText");
   const openMemoBtn = document.getElementById("openMemoBtn");
   const openMemoLink = document.getElementById("openMemoLink");
 
-  // Modal
   const modal = document.getElementById("modal");
   const modalFrame = document.getElementById("modalFrame");
   const modalTitle = document.getElementById("modalTitle");
@@ -594,7 +511,6 @@
   function drawWheel(rot = 0){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    // fond/ombre douce
     ctx.save();
     ctx.beginPath();
     ctx.arc(cx, cy, radius, 0, Math.PI*2);
@@ -619,145 +535,6 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // texte
       const mid = (a0 + a1) / 2;
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.rotate(mid);
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#0f172a";
-      ctx.font = "800 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial";
-      // tronque un peu si trop long
-      const raw = segments[i].label;
-      const label = raw.length > 18 ? raw.slice(0, 17) + "…" : raw;
-      ctx.fillText(label, radius - 18, 7);
-      ctx.restore();
-    }
-
-    // anneau
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius, 0, Math.PI*2);
-    ctx.strokeStyle = "#cbd5e1";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
-    // centre
-    ctx.beginPath();
-    ctx.arc(cx, cy, 62, 0, Math.PI*2);
-    ctx.fillStyle = "#ffffff";
-    ctx.fill();
-    ctx.strokeStyle = "#e2e8f0";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-  }
-
-  function normalizeAngle(a){
-    const twoPi = Math.PI * 2;
-    return ((a % twoPi) + twoPi) % twoPi;
-  }
-
-  function pickedSegmentIndex(rot){
-    const pointerAngle = -Math.PI / 2; // pointeur en haut
-    const a = normalizeAngle(pointerAngle - rot);
-    return Math.floor(a / segAngle);
-  }
-
-  function setResult(idx){
-    const s = segments[idx];
-
-    resTitle.textContent = s.title;
-    resText.textContent  = s.text;
-
-    // visuel
-    if(s.thumb){
-      thumbEl.src = s.thumb;
-      thumbEl.style.display = "block";
-      thumbEl.alt = "Visuel : " + s.title;
-    } else {
-      thumbEl.style.display = "none";
-      thumbEl.src = "";
-    }
-
-    // actions fiche
-    if(s.memo){
-      openMemoBtn.style.display = "inline-flex";
-      openMemoLink.style.display = "inline-flex";
-      openMemoLink.href = s.memo;
-
-      openMemoBtn.onclick = () => openModal(s.memoTitle || "Fiche mémo", s.memo);
-    } else {
-      openMemoBtn.style.display = "none";
-      openMemoLink.style.display = "none";
-      openMemoLink.href = "#";
-      openMemoBtn.onclick = null;
-    }
-  }
-
-  function openModal(title, src){
-    modalTitle.textContent = title;
-    modalFrame.src = src;
-    modal.classList.add("open");
-    // lock scroll (utile dans Notion)
-    document.body.style.overflow = "hidden";
-  }
-  function closeModal(){
-    modal.classList.remove("open");
-    modalFrame.src = "";
-    document.body.style.overflow = "";
-  }
-
-  modalClose.addEventListener("click", closeModal);
-  modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
-  window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
-
-  function spin(){
-    if(spinning) return;
-    spinning = true;
-    startBtn.disabled = true;
-
-    const extraSpins = 5 + Math.random() * 3; // 5 à 8 tours
-    const targetIndex = Math.floor(Math.random() * segments.length);
-
-    const pointerAngle = -Math.PI / 2;
-    const eps = segAngle * 0.5; // centre du segment sous le pointeur
-    const desiredWheelAngle = targetIndex * segAngle + eps;
-
-    let rotFinal = pointerAngle - desiredWheelAngle;
-    rotFinal -= extraSpins * Math.PI * 2;
-
-    const rotStart = rotation;
-    const rotEnd = rotFinal;
-
-    const duration = 2200 + Math.random() * 800;
-    const t0 = performance.now();
-
-    function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
-
-    function frame(now){
-      const t = Math.min(1, (now - t0) / duration);
-      const e = easeOutCubic(t);
-      rotation = rotStart + (rotEnd - rotStart) * e;
-      drawWheel(rotation);
-
-      if(t < 1){
-        requestAnimationFrame(frame);
-      } else {
-        spinning = false;
-        startBtn.disabled = false;
-        setResult(pickedSegmentIndex(rotation));
-      }
-    }
-
-    requestAnimationFrame(frame);
-  }
-
-  // Init
-  drawWheel(rotation);
-
-  // clic sur le bouton OU sur la roue
-  startBtn.addEventListener("click", spin);
-  canvas.addEventListener("click", spin);
-</script>
-
-</body>
-</html>
