@@ -538,3 +538,129 @@
       const mid = (a0 + a1) / 2;
       ctx.save();
       ctx.translate(cx, cy);
+      ctx.rotate(mid);
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "800 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial";
+      const raw = segments[i].label;
+      const label = raw.length > 18 ? raw.slice(0, 17) + "…" : raw;
+      ctx.fillText(label, radius - 18, 7);
+      ctx.restore();
+    }
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI*2);
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 62, 0, Math.PI*2);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.strokeStyle = "#e2e8f0";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  function normalizeAngle(a){
+    const twoPi = Math.PI * 2;
+    return ((a % twoPi) + twoPi) % twoPi;
+  }
+  function pickedSegmentIndex(rot){
+    const pointerAngle = -Math.PI / 2;
+    const a = normalizeAngle(pointerAngle - rot);
+    return Math.floor(a / segAngle);
+  }
+
+  function setResult(idx){
+    const s = segments[idx];
+    resTitle.textContent = s.title;
+    resText.textContent  = s.text;
+
+    if(s.thumb){
+      thumbEl.src = s.thumb;
+      thumbEl.style.display = "block";
+      thumbEl.alt = "Visuel : " + s.title;
+    } else {
+      thumbEl.style.display = "none";
+      thumbEl.src = "";
+    }
+
+    if(s.memo){
+      openMemoBtn.style.display = "inline-flex";
+      openMemoLink.style.display = "inline-flex";
+      openMemoLink.href = s.memo;
+      openMemoBtn.onclick = () => openModal(s.memoTitle || "Fiche mémo", s.memo);
+    } else {
+      openMemoBtn.style.display = "none";
+      openMemoLink.style.display = "none";
+      openMemoLink.href = "#";
+      openMemoBtn.onclick = null;
+    }
+  }
+
+  function openModal(title, src){
+    modalTitle.textContent = title;
+    modalFrame.src = src;
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal(){
+    modal.classList.remove("open");
+    modalFrame.src = "";
+    document.body.style.overflow = "";
+  }
+  modalClose.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+  window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
+
+  function spin(){
+    if(spinning) return;
+    spinning = true;
+    startBtn.disabled = true;
+
+    const extraSpins = 5 + Math.random() * 3;
+    const targetIndex = Math.floor(Math.random() * segments.length);
+
+    const pointerAngle = -Math.PI / 2;
+    const eps = segAngle * 0.5;
+    const desiredWheelAngle = targetIndex * segAngle + eps;
+
+    let rotFinal = pointerAngle - desiredWheelAngle;
+    rotFinal -= extraSpins * Math.PI * 2;
+
+    const rotStart = rotation;
+    const rotEnd = rotFinal;
+
+    const duration = 2200 + Math.random() * 800;
+    const t0 = performance.now();
+
+    function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+    function frame(now){
+      const t = Math.min(1, (now - t0) / duration);
+      const e = easeOutCubic(t);
+      rotation = rotStart + (rotEnd - rotStart) * e;
+      drawWheel(rotation);
+
+      if(t < 1){
+        requestAnimationFrame(frame);
+      } else {
+        spinning = false;
+        startBtn.disabled = false;
+        setResult(pickedSegmentIndex(rotation));
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  drawWheel(rotation);
+  startBtn.addEventListener("click", spin);
+  canvas.addEventListener("click", spin);
+</script>
+
+</body>
+</html>
+
+
