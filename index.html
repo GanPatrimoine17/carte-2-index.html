@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vœux 2026 - Gan Patrimoine 17 (Carte 2)</title>
+
+  <style>
+    :root{
+      --gan-green:#0B7A4B;
+      --gan-blue:#1E4E8C;
+      --gan-yellow:#F2C94C;
+      --text:#0f172a;
+      --muted:#475569;
+      --card:#ffffff;
+      --bg:#f6f8fb;
+      --border:#e2e8f0;
+      --shadow:0 10px 25px rgba(2,6,23,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: var(--bg);
+      color:var(--text);
+      display:grid;
+      place-items:center;
+      min-height:100vh;
+      padding:18px;
+    }
+
+    /* carré */
+    .frame{
+      width:min(980px, 96vw);
+      aspect-ratio: 1 / 1;
+      background:linear-gradient(180deg,#ffffff 0%, #f7fbff 100%);
+      border:1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .pad{
+      padding:22px;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    /* Header */
+    .header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+    .logo{
+      width:170px;
+      max-width:32vw;
+      height:auto;
+      display:block;
+    }
+    .title{
+      margin:0;
+      font-size: clamp(16px, 1.7vw, 26px);
+      line-height:1.15;
+      letter-spacing:-0.01em;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 560px){
+      .title{ white-space: normal; }
+    }
+
+    /* Layout */
+    .grid{
+      flex:1;
+      display:grid;
+      grid-template-columns: 1.05fr 1.35fr;
+      gap:16px;
+      min-height:0;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 16px rgba(2,6,23,.05);
+      overflow:hidden;
+      min-height:0;
+    }
+    .card-inner{ padding:16px; height:100%; }
+
+    /* Left content */
+    .left-stack{
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .pave{
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:#ffffff;
+    }
+    .pave .p-title{
+      margin:0 0 8px;
+      font-weight:900;
+      color:var(--gan-blue);
+      font-size:14px;
+      letter-spacing:.01em;
+    }
+    .pave ul{
+      margin:0;
+      padding-left:18px;
+      color:var(--text);
+      line-height:1.35;
+      font-size:13px;
+    }
+    .pave li{ margin:6px 0; }
+    .pill{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#f1f5f9;
+      border:1px solid var(--border);
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+      margin-left:6px;
+      white-space:nowrap;
+    }
+
+    /* Right: wheel + result */
+    .wheel-wrap{
+      height:100%;
+      display:grid;
+      grid-template-rows: auto 1fr auto;
+      gap:12px;
+      min-height:0;
+    }
+    .wheel-title{
+      font-weight:900;
+      font-size:15px;
+      padding:16px 16px 0 16px;
+    }
+    .wheel-area{
+      position:relative;
+      display:grid;
+      place-items:center;
+      padding:10px;
+      min-height:0;
+      user-select:none;
+    }
+    canvas{
+      width:min(420px, 92%);
+      height:auto;
+      aspect-ratio: 1/1;
+      display:block;
+      cursor:pointer;
+    }
+    .pointer{
+      position:absolute;
+      top:8px;
+      width:0; height:0;
+      border-left:12px solid transparent;
+      border-right:12px solid transparent;
+      border-bottom:20px solid var(--gan-blue);
+      filter: drop-shadow(0 6px 8px rgba(2,6,23,.2));
+      z-index:3;
+      pointer-events:none;
+    }
+
+    /* Bouton central */
+    .center-btn{
+      position:absolute;
+      z-index:4;
+      width:96px;
+      height:96px;
+      border-radius:999px;
+      border:2px solid #e2e8f0;
+      background: var(--gan-green);
+      color:#fff;
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:.10em;
+      cursor:pointer;
+      box-shadow: 0 12px 20px rgba(11,122,75,.18);
+      display:grid;
+      place-items:center;
+      text-transform:uppercase;
+      transform: translateY(22px);
+    }
+    .center-btn:active{ transform: translateY(22px) scale(.98); }
+    .center-btn[disabled]{ opacity:.55; cursor:not-allowed; }
+
+    /* Result */
+    .result{
+      border-top:1px solid var(--border);
+      background:#fff;
+      padding:14px;
+      display:grid;
+      grid-template-columns: 96px 1fr;
+      gap:12px;
+      align-items:start;
+    }
+    .thumb{
+      width:96px;
+      height:72px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#f1f5f9;
+      object-fit:cover;
+      display:block;
+    }
+    .res-meta .label{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:var(--muted);
+      font-weight:900;
+    }
+    .res-meta .title2{
+      margin:6px 0 8px;
+      font-weight:900;
+      font-size:16px;
+      color:var(--gan-blue);
+      line-height:1.2;
+    }
+    .res-meta .text{
+      margin:0 0 10px;
+      color:var(--text);
+      line-height:1.35;
+      font-size:13px;
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      font-weight:900;
+      cursor:pointer;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .btn-primary{
+      border:0;
+      background: var(--gan-yellow);
+      color:#1f2937;
+      box-shadow: 0 10px 18px rgba(242,201,76,.25);
+    }
+
+    /* Bottom section (like previous) */
+    .bottom{
+      display:grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap:16px;
+    }
+    .photo{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background:#e2e8f0;
+      display:block;
+      min-height:120px;
+    }
+    .wishes{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      height:100%;
+      justify-content:space-between;
+    }
+    .wishes .copy{
+      padding:14px;
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background:#fff;
+    }
+    .wishes .copy .big{
+      font-weight:900;
+      font-size:16px;
+      margin:0 0 6px;
+    }
+    .wishes .copy .small{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+    .btn-rdv{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      padding:12px 16px;
+      border-radius:999px;
+      font-weight:900;
+      letter-spacing:.02em;
+      background: var(--gan-yellow);
+      color:#1f2937;
+      box-shadow: 0 10px 18px rgba(242,201,76,.25);
+      text-decoration:none;
+      text-align:center;
+    }
+
+    /* Modal (C) full-screen */
+    .modal{
+      position:fixed;
+      inset:0;
+      background: rgba(2,6,23,.62);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:9999;
+    }
+    .modal.open{ display:flex; }
+    .modal-card{
+      width:min(1100px, 96vw);
+      height:min(720px, 92vh);
+      background:#fff;
+      border-radius: 18px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(2,6,23,.25);
+      display:grid;
+      grid-template-rows: auto 1fr;
+    }
+    .modal-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border-bottom:1px solid var(--border);
+      background:#fff;
+    }
+    .modal-title{
+      font-weight:900;
+      color:var(--gan-blue);
+      font-size:14px;
+      margin:0;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .modal-close{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:999px;
+      padding:8px 12px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .modal-body{
+      background:#f8fafc;
+      display:grid;
+      place-items:center;
+    }
+    .modal-frame{
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    @media (max-width: 860px){
+      .frame{ aspect-ratio:auto; }
+      .grid{ grid-template-columns: 1fr; }
+      .bottom{ grid-template-columns: 1fr; }
+      .pad{ padding:16px; }
+      .result{ grid-template-columns: 1fr; }
+      .thumb{ width:100%; height:160px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="frame">
+    <div class="pad">
+
+      <!-- HEADER -->
+      <div class="header">
+        <div class="brand">
+          <img class="logo" src="logo-gan-patrimoine.png" alt="Logo Gan Patrimoine" />
+          <h1 class="title">Gan Patrimoine 17 vous présente ses vœux 2026&nbsp;!</h1>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- LEFT -->
+        <div class="card">
+          <div class="card-inner left-stack">
+
+            <div class="pave">
+              <p class="p-title">Les nouveautés chez Gan Patrimoine</p>
+              <ul>
+                <li><strong>Essentiels</strong> <span class="pill">encours &lt; 60&nbsp;000€</span></li>
+                <li><strong>Le Club</strong> <span class="pill">60&nbsp;000€ &lt; encours &lt; 250&nbsp;000€</span></li>
+                <li><strong>Gestion Privée</strong> <span class="pill">&gt; 250&nbsp;000€</span></li>
+              </ul>
+            </div>
+
+            <div class="pave">
+              <p class="p-title">Jouez à la roue sur vos versements</p>
+              <ul>
+                <li>Découvrez un gain ou une offre produit à chaque lancer.</li>
+                <li>Les conditions s’affichent automatiquement.</li>
+              </ul>
+            </div>
+
+            <div class="pave" style="margin-top:auto;">
+              <p class="p-title">Astuce</p>
+              <ul>
+                <li>Vous pouvez cliquer sur la roue <strong>ou</strong> sur le bouton <strong>GAGNEZ</strong>.</li>
+                <li>Les fiches mémo s’ouvrent en plein écran.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="card">
+          <div class="wheel-wrap">
+            <div class="wheel-title">La roue des offres 2026</div>
+
+            <div class="wheel-area">
+              <div class="pointer" aria-hidden="true"></div>
+              <canvas id="wheel" width="520" height="520" aria-label="Roue"></canvas>
+              <button id="startBtn" class="center-btn">GAGNEZ</button>
+            </div>
+
+            <!-- Result (texte + visuel + actions) -->
+            <div class="result" aria-live="polite">
+              <img id="thumb" class="thumb" src="" alt="Visuel du résultat" style="display:none;" />
+              <div class="res-meta">
+                <div class="label">Résultat</div>
+                <div id="resTitle" class="title2">Cliquez sur GAGNEZ</div>
+                <p id="resText" class="text">La roue s’arrêtera sur un segment aléatoire, avec un texte et un visuel.</p>
+                <div class="actions">
+                  <button id="openMemoBtn" class="btn" style="display:none;">Voir la fiche</button>
+                  <a id="openMemoLink" class="btn" href="#" target="_blank" rel="noopener" style="display:none;">Ouvrir dans un onglet</a>
+                  <a class="btn btn-primary" href="https://forms.gle/MgPuFXV8FjXicg8UA" target="_blank" rel="noopener">Rencontrons-nous !</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM (comme la précédente) -->
+      <div class="bottom">
+        <div>
+          <img class="photo" src="photo-groupe.jpg" alt="Photo des conseillers Gan Pat 17" />
+        </div>
+
+        <div class="wishes">
+          <div class="copy">
+            <p class="big">Votre conseiller vous présente ses meilleurs vœux</p>
+            <p class="small">Venez découvrir toutes nos solutions en cliquant en dessous</p>
+          </div>
+
+          <a class="btn-rdv" href="https://forms.gle/MgPuFXV8FjXicg8UA" target="_blank" rel="noopener">
+            Rencontrons-nous !
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL plein écran -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-label="Fiche mémo">
+    <div class="modal-card">
+      <div class="modal-bar">
+        <p id="modalTitle" class="modal-title">Fiche mémo</p>
+        <button id="modalClose" class="modal-close">Fermer</button>
+      </div>
+      <div class="modal-body">
+        <iframe id="modalFrame" class="modal-frame" src="" title="Document"></iframe>
+      </div>
+    </div>
+  </div>
+
+<script>
+  /**
+   * FICHIERS À METTRE DANS LE REPO (même dossier que index.html)
+   * - heliante-flash-memo.png / heliante-flash-memo.pdf
+   * - telluma-boost.png / telluma-boost.pdf
+   * - heliante-innov-memo.png / heliante-innov-memo.pdf
+   * - logo-gan-patrimoine.png, photo-groupe.jpg
+   */
+
+  const segments = [
+    {
+      label: "Heliante Flash Mai 2026 • 8%",
+      color: "#E8F0FB",
+      title: "Heliante Flash Mai 2026 — 8%",
+      text: "Fiche mémo : Heliante Flash Mai 2026 (8%).",
+      thumb: "heliante-flash-memo.png",
+      memo: "heliante-flash-memo.pdf",
+      memoTitle: "Heliante Flash Mai 2026 — Fiche mémo"
+    },
+    {
+      label: "3 000 €",
+      color: "#FFF7E6",
+      title: "Abondement jusqu’à 3 000 €",
+      text: "Abondement de 1% du versement plafonné à 3 000€ pour tout client Gestion Privée ou versement de plus de 250 000€.",
+      thumb: "", memo: "", memoTitle: ""
+    },
+    {
+      label: "Telluma Boost • 5%",
+      color: "#EAF6F0",
+      title: "Telluma Boost Mai 2026 — 5%",
+      text: "Document : Telluma Boost Mai 2026 (5%).",
+      thumb: "telluma-boost.png",
+      memo: "telluma-boost.pdf",
+      memoTitle: "Telluma Boost Mai 2026 — Document"
+    },
+    {
+      label: "750 €",
+      color: "#F1F5F9",
+      title: "Abondement jusqu’à 750 €",
+      text: "Abondement de 1% du versement plafonné à 750€ pour tout versement d’un montant minimum de 30 000€.",
+      thumb: "", memo: "", memoTitle: ""
+    },
+    {
+      label: "Heliante Innov & Transfo • 10%",
+      color: "#F7F2FF",
+      title: "Heliante Innov & Transfo Mai 2026 — 10%",
+      text: "Fiche mémo : Heliante Innov & Transfo Mai 2026 (10%).",
+      thumb: "heliante-innov-memo.png",
+      memo: "heliante-innov-memo.pdf",
+      memoTitle: "Heliante Innov & Transfo Mai 2026 — Fiche mémo"
+    },
+    {
+      label: "1 500 €",
+      color: "#EAF2FF",
+      title: "Abondement jusqu’à 1 500 €",
+      text: "Abondement de 1% du versement plafonné à 1 500€ pour tout versement d’un montant minimum de 20 000€ pour tout client Le Club.",
+      thumb: "", memo: "", memoTitle: ""
+    }
+  ];
+
+  // Wheel canvas
+  const canvas = document.getElementById("wheel");
+  const ctx = canvas.getContext("2d");
+  const startBtn = document.getElementById("startBtn");
+
+  // Result UI
+  const thumbEl = document.getElementById("thumb");
+  const resTitle = document.getElementById("resTitle");
+  const resText  = document.getElementById("resText");
+  const openMemoBtn = document.getElementById("openMemoBtn");
+  const openMemoLink = document.getElementById("openMemoLink");
+
+  // Modal
+  const modal = document.getElementById("modal");
+  const modalFrame = document.getElementById("modalFrame");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalClose = document.getElementById("modalClose");
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const radius = Math.min(cx, cy) - 16;
+  const segAngle = (Math.PI * 2) / segments.length;
+
+  let rotation = 0;
+  let spinning = false;
+
+  function drawWheel(rot = 0){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // fond/ombre douce
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI*2);
+    ctx.shadowColor = "rgba(2,6,23,.10)";
+    ctx.shadowBlur = 18;
+    ctx.fillStyle = "#fff";
+    ctx.fill();
+    ctx.restore();
+
+    for(let i=0; i<segments.length; i++){
+      const a0 = rot + i * segAngle;
+      const a1 = a0 + segAngle;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, radius, a0, a1);
+      ctx.closePath();
+      ctx.fillStyle = segments[i].color;
+      ctx.fill();
+
+      ctx.strokeStyle = "#e2e8f0";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // texte
+      const mid = (a0 + a1) / 2;
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(mid);
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "800 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial";
+      // tronque un peu si trop long
+      const raw = segments[i].label;
+      const label = raw.length > 18 ? raw.slice(0, 17) + "…" : raw;
+      ctx.fillText(label, radius - 18, 7);
+      ctx.restore();
+    }
+
+    // anneau
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI*2);
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // centre
+    ctx.beginPath();
+    ctx.arc(cx, cy, 62, 0, Math.PI*2);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.strokeStyle = "#e2e8f0";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  function normalizeAngle(a){
+    const twoPi = Math.PI * 2;
+    return ((a % twoPi) + twoPi) % twoPi;
+  }
+
+  function pickedSegmentIndex(rot){
+    const pointerAngle = -Math.PI / 2; // pointeur en haut
+    const a = normalizeAngle(pointerAngle - rot);
+    return Math.floor(a / segAngle);
+  }
+
+  function setResult(idx){
+    const s = segments[idx];
+
+    resTitle.textContent = s.title;
+    resText.textContent  = s.text;
+
+    // visuel
+    if(s.thumb){
+      thumbEl.src = s.thumb;
+      thumbEl.style.display = "block";
+      thumbEl.alt = "Visuel : " + s.title;
+    } else {
+      thumbEl.style.display = "none";
+      thumbEl.src = "";
+    }
+
+    // actions fiche
+    if(s.memo){
+      openMemoBtn.style.display = "inline-flex";
+      openMemoLink.style.display = "inline-flex";
+      openMemoLink.href = s.memo;
+
+      openMemoBtn.onclick = () => openModal(s.memoTitle || "Fiche mémo", s.memo);
+    } else {
+      openMemoBtn.style.display = "none";
+      openMemoLink.style.display = "none";
+      openMemoLink.href = "#";
+      openMemoBtn.onclick = null;
+    }
+  }
+
+  function openModal(title, src){
+    modalTitle.textContent = title;
+    modalFrame.src = src;
+    modal.classList.add("open");
+    // lock scroll (utile dans Notion)
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal(){
+    modal.classList.remove("open");
+    modalFrame.src = "";
+    document.body.style.overflow = "";
+  }
+
+  modalClose.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+  window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
+
+  function spin(){
+    if(spinning) return;
+    spinning = true;
+    startBtn.disabled = true;
+
+    const extraSpins = 5 + Math.random() * 3; // 5 à 8 tours
+    const targetIndex = Math.floor(Math.random() * segments.length);
+
+    const pointerAngle = -Math.PI / 2;
+    const eps = segAngle * 0.5; // centre du segment sous le pointeur
+    const desiredWheelAngle = targetIndex * segAngle + eps;
+
+    let rotFinal = pointerAngle - desiredWheelAngle;
+    rotFinal -= extraSpins * Math.PI * 2;
+
+    const rotStart = rotation;
+    const rotEnd = rotFinal;
+
+    const duration = 2200 + Math.random() * 800;
+    const t0 = performance.now();
+
+    function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+    function frame(now){
+      const t = Math.min(1, (now - t0) / duration);
+      const e = easeOutCubic(t);
+      rotation = rotStart + (rotEnd - rotStart) * e;
+      drawWheel(rotation);
+
+      if(t < 1){
+        requestAnimationFrame(frame);
+      } else {
+        spinning = false;
+        startBtn.disabled = false;
+        setResult(pickedSegmentIndex(rotation));
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  // Init
+  drawWheel(rotation);
+
+  // clic sur le bouton OU sur la roue
+  startBtn.addEventListener("click", spin);
+  canvas.addEventListener("click", spin);
+</script>
+
+</body>
+</html>
