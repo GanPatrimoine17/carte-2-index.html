@@ -145,52 +145,52 @@
     }
 
     /* ✅ Bouton parfaitement centré (et légèrement descendu) */
-    .center-btn{
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform: translate(-50%, -50%) translateY(20px);
-      z-index:4;
+   .center-btn{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%) translateY(20px);
+  z-index:4;
 
-      width:92px;
-      height:92px;
-      border-radius:999px;
-      border:2px solid #e2e8f0;
-      background: var(--gan-green);
-      color:#fff;
-      font-weight:900;
-      font-size:12px;
-      letter-spacing:.10em;
-      cursor:pointer;
-      box-shadow: 0 12px 20px rgba(11,122,75,.18);
-      display:grid;
-      place-items:center;
-      text-transform:uppercase;
-    }
-    .center-btn:active{
-      transform: translate(-50%, -50%) translateY(20px) scale(.98);
-    }
+  width:92px;
+  height:92px;
+  border-radius:999px;
+  border:2px solid #e2e8f0;
+  background: var(--gan-green);
+  color:#fff;
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:.10em;
+  cursor:pointer;
+  box-shadow: 0 12px 20px rgba(11,122,75,.18);
+  display:grid;
+  place-items:center;
+  text-transform:uppercase;
+}
+.center-btn:active{
+  transform: translate(-50%, -50%) translateY(20px) scale(.98);
+}
     .center-btn[disabled]{ opacity:.55; cursor:not-allowed; }
 
     /* ✅ Résultat toujours visible, jamais recouvert */
     .result{
-      border-top:1px solid var(--border);
-      background:#fff;
-      padding:14px;
-      display:grid;
-      grid-template-columns: 110px 1fr;
-      gap:12px;
-      align-items:start;
-    }
+  border-top:1px solid var(--border);
+  background:#fff;
+  padding:14px;
+  display:flex;
+  flex-direction:column;   /* ✅ pleine largeur */
+  gap:12px;
+}
     .thumb{
-      width:110px;
-      height:82px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:#f1f5f9;
-      object-fit:cover;
-      display:block;
-    }
+  width:100%;              /* ✅ s'étire */
+  max-height:220px;
+  height:auto;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#f1f5f9;
+  object-fit:contain;       /* mieux pour documents */
+  display:block;
+}
     .res-meta .label{
       font-size:12px;
       text-transform:uppercase;
@@ -662,5 +662,6 @@
 
 </body>
 </html>
+
 
 
