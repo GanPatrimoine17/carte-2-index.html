@@ -198,6 +198,7 @@
       color:var(--text);
       line-height:1.4;
       font-size:13px;
+      white-space: pre-line; /* affiche les retours à la ligne */
     }
 
     .actions{
@@ -410,56 +411,87 @@
   </div>
 
 <script>
-  const segments = [
-    {
-      label: "Heliante Flash • 8%",
-      color: "#E8F0FB",
-      title: "Heliante Flash Mai 2026 — 8%",
-      text: "Fiche mémo : Heliante Flash Mai 2026 (8%).",
-      memo: "heliante-flash-memo.pdf",
-      memoTitle: "Heliante Flash Mai 2026 — Fiche mémo"
-    },
-    {
-      label: "3 000€",
-      color: "#FFF7E6",
-      title: "Abondement jusqu’à 3 000 €",
-      text: "Abondement de 1% du versement plafonné à 3 000€ pour tout client Gestion Privée ou versement de plus de 250 000€.",
-      memo: "",
-      memoTitle: ""
-    },
-    {
-      label: "Telluma Boost • 5%",
-      color: "#EAF6F0",
-      title: "Telluma Boost Mai 2026 — 5%",
-      text: "Document : Telluma Boost Mai 2026 (5%).",
-      memo: "telluma-boost.pdf",
-      memoTitle: "Telluma Boost Mai 2026 — Document"
-    },
-    {
-      label: "750€",
-      color: "#F1F5F9",
-      title: "Abondement jusqu’à 750 €",
-      text: "Abondement de 1% du versement plafonné à 750€ pour tout versement d’un montant minimum de 30 000€.",
-      memo: "",
-      memoTitle: ""
-    },
-    {
-      label: "Heliante Innov • 10%",
-      color: "#F7F2FF",
-      title: "Heliante Innov & Transfo Mai 2026 — 10%",
-      text: "Fiche mémo : Heliante Innov & Transfo Mai 2026 (10%).",
-      memo: "heliante-innov-memo.pdf",
-      memoTitle: "Heliante Innov & Transfo Mai 2026 — Fiche mémo"
-    },
-    {
-      label: "1 500€",
-      color: "#EAF2FF",
-      title: "Abondement jusqu’à 1 500 €",
-      text: "Abondement de 1% du versement plafonné à 1 500€ pour tout versement d’un montant minimum de 20 000€ pour tout client Le Club.",
-      memo: "",
-      memoTitle: ""
-    }
-  ];
+ const segments = [
+  {
+    label: "Heliante Flash • 8%",
+    color: "#E8F0FB",
+    title: "Heliante Flash Mai 2026 — 8%",
+    text:
+`Émetteur : HSBC
+• Indice Benchmark optimisé (Décrément 5%) : TRTITD5 (Euronext Transatlantic Sector Titans Decrement 5%)
+• Maturité : 8 ans
+• Coupon trimestriel conditionnel : 2,00% (soit 8% annualisé)
+• Effet mémoire : Oui
+• Condition de gain et de rappel : si le niveau de l’indice est supérieur ou égal à son niveau initial
+• Périodicité du rappel anticipé : tous les trimestres à partir du trimestre 4 (trimestres 4 à 31)
+• Capital protégé à maturité (short put 75%) : jusqu’à -25% de baisse de l’indice`,
+    memo: "heliante-flash-memo.pdf",
+    memoTitle: "Heliante Flash Mai 2026 — Fiche mémo"
+  },
+  {
+    label: "3 000€",
+    color: "#FFF7E6",
+    title: "Abondement jusqu’à 3 000 €",
+    text:
+`Abondement de 1% du versement plafonné à 3 000€.
+Éligibilité : tout client Gestion Privée OU versement supérieur à 250 000€.`,
+    memo: "",
+    memoTitle: ""
+  },
+  {
+    label: "Telluma Boost • 5%",
+    color: "#EAF6F0",
+    title: "Telluma Boost Mai 2026 — 5%",
+    text:
+`Émetteur : CITI
+• Sans indice : uniquement le risque émetteur
+• Maturité : 10 ans
+• Capital garanti à maturité : 100% du capital initialement investi
+• Coupon annuel inconditionnel : 4%
+• Coupon annuel bonus : 1%/an, en cas de rappel anticipé
+• Périodicité du rappel au gré de l’émetteur : chaque année à partir de l’année 2`,
+    memo: "telluma-boost.pdf",
+    memoTitle: "Telluma Boost Mai 2026 — Document"
+  },
+  {
+    label: "750€",
+    color: "#F1F5F9",
+    title: "Abondement jusqu’à 750 €",
+    text:
+`Abondement de 1% du versement plafonné à 750€.
+Éligibilité : versement minimum de 30 000€.`,
+    memo: "",
+    memoTitle: ""
+  },
+  {
+    label: "Heliante Innov • 10%",
+    color: "#F7F2FF",
+    title: "Heliante Innovation & Transformation Mai 2026 — 10%",
+    text:
+`Émetteur : JP MORGAN
+Émission : Green Bond
+• Indice Benchmark optimisé (Décrément 5%) : Innovation & Transformation, SOLACTIVE NTR 5%
+• Maturité : 8 ans
+• Coupon annuel conditionnel : 10%
+• Effet mémoire : Oui
+• Condition de gain et de rappel : si le niveau de l’indice est supérieur ou égal à son niveau initial
+• Périodicité du rappel anticipé : tous les ans à partir de l’année 1 (années 1 à 7)
+• Capital protégé à maturité (short put 75%) : jusqu’à -25% de baisse de l’indice`,
+    memo: "heliante-innov-memo.pdf",
+    memoTitle: "Heliante Innovation & Transformation Mai 2026 — Fiche mémo"
+  },
+  {
+    label: "1 500€",
+    color: "#EAF2FF",
+    title: "Abondement jusqu’à 1 500 €",
+    text:
+`Abondement de 1% du versement plafonné à 1 500€.
+Éligibilité : versement minimum de 20 000€ pour tout client Le Club.`,
+    memo: "",
+    memoTitle: ""
+  }
+];
+
 
   const canvas = document.getElementById("wheel");
   const ctx = canvas.getContext("2d");
@@ -628,6 +660,7 @@
 
 </body>
 </html>
+
 
 
 
